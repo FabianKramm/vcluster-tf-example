@@ -37,6 +37,32 @@ kubectl label secret aws-credentials "terraform.vcluster.com/provider=aws-exampl
 
 ## Create the vCluster
 
+Create `vcluster.yaml`:
 ```
-vcluster platform create vcluster my-vcluster -n my-vcluster --values https://raw.githubusercontent.com/FabianKramm/vcluster-tf-example/refs/heads/main/vcluster.yaml --chart-version 0.28.0-next.7
+privateNodes:
+  enabled: true
+  tunnel:
+    enabled: true
+    nodeToNode:
+      enabled: true
+  nodePools:
+    dynamic:
+    - name: aws
+      requirements:
+      - key: vcluster.com/node-provider
+        operator: In
+        values: ["aws-example"]
+      - key: region
+        operator: In
+        values: ["eu-west-1"]
+
+controlPlane:
+  distro:
+    k8s:
+      version: v1.32.7
+```
+
+Create:
+```
+vcluster platform create vcluster my-vcluster -n my-vcluster --values vcluster.yaml --chart-version 0.28.0-next.7
 ```
