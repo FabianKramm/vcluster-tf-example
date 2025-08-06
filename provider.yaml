@@ -1,4 +1,4 @@
-apiVersion: v1
+apiVersion: management.loft.sh/v1
 kind: NodeProvider
 metadata:
   name: aws-example
