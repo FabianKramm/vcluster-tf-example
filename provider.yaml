@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: NodeProvider
+metadata:
+  name: aws-example
+spec:
+  terraform:
+    nodeEnvironmentTemplate:
+      git:
+        repository: https://github.com/FabianKramm/vcluster-tf-example.git
+        subPath: environment
+    nodeTemplate:
+      git:
+        repository: https://github.com/FabianKramm/vcluster-tf-example.git
+        subPath: node
+    nodeTypes:
+    - name: t3.medium
+      resources:
+        cpu: "2"
+        memory: 4Gi
+      properties:
+        instance-type: t3.medium
+        region: "*"
+    - name: t3.large
+      resources:
+        cpu: "2"
+        memory: 8Gi
+      properties:
+        instance-type: t3.large
+        region: "*"
+    - name: c5.xlarge
+      resources:
+        cpu: "4"
+        memory: 8Gi
+      properties:
+        instance-type: c5.xlarge
+        region: "*"
+        
+    
