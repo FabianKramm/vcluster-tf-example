@@ -38,5 +38,5 @@ kubectl label secret aws-credentials -n vcluster-platform "terraform.vcluster.co
 ## Create the vCluster
 
 ```
-vcluster platform create vcluster my-vcluster --values https://raw.githubusercontent.com/FabianKramm/vcluster-tf-example/refs/heads/main/vcluster.yaml
+vcluster platform create vcluster my-vcluster --values https://raw.githubusercontent.com/FabianKramm/vcluster-tf-example/refs/heads/main/vcluster.yaml --chart-version 0.28.0-next.7
 ```
