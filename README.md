@@ -24,7 +24,7 @@ AWS_SESSION_TOKEN=...
 
 Create the aws secret
 ```
-kubectl create secret generic aws-credentials -n vcluster-platform \
+kubectl create secret generic aws-credentials \
   --from-literal=AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" \
   --from-literal=AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" \
   --from-literal=AWS_SESSION_TOKEN="$AWS_SESSION_TOKEN"
@@ -32,11 +32,11 @@ kubectl create secret generic aws-credentials -n vcluster-platform \
 
 Label the aws secret
 ```
-kubectl label secret aws-credentials -n vcluster-platform "terraform.vcluster.com/provider=aws-example" --overwrite
+kubectl label secret aws-credentials "terraform.vcluster.com/provider=aws-example" --overwrite
 ```
 
 ## Create the vCluster
 
 ```
-vcluster platform create vcluster my-vcluster --values https://raw.githubusercontent.com/FabianKramm/vcluster-tf-example/refs/heads/main/vcluster.yaml --chart-version 0.28.0-next.7
+vcluster platform create vcluster my-vcluster -n my-vcluster --values https://raw.githubusercontent.com/FabianKramm/vcluster-tf-example/refs/heads/main/vcluster.yaml --chart-version 0.28.0-next.7
 ```
