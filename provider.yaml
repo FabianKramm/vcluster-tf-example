@@ -19,20 +19,20 @@ spec:
         memory: 4Gi
       properties:
         instance-type: t3.medium
-        region: "*"
+        region: "eu-west-1,eu-west-2"
     - name: t3.large
       resources:
         cpu: "2"
         memory: 8Gi
       properties:
         instance-type: t3.large
-        region: "*"
+        region: "eu-west-1,eu-west-2"
     - name: c5.xlarge
       resources:
         cpu: "4"
         memory: 8Gi
       properties:
         instance-type: c5.xlarge
-        region: "*"
+        region: "eu-west-1,eu-west-2"
         
     
