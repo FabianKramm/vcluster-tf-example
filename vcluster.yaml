@@ -1,0 +1,21 @@
+privateNodes:
+  enabled: true
+  tunnel:
+    enabled: true
+    nodeToNode:
+      enabled: true
+  nodePools:
+    dynamic:
+    - name: aws
+      requirements:
+      - key: vcluster.com/node-provider
+        operator: In
+        values: ["aws-example"]
+      - key: region
+        operator: In
+        values: ["eu-west-1"]
+
+controlPlane:
+  distro:
+    k8s:
+      version: v1.32.7
