@@ -9,39 +9,39 @@ terraform {
 }
 
 provider "aws" {
-  region = var.aws_region
+  region = var.vcluster.requirements["region"]
 }
 
 ############################
 # Networking primitives
 ############################
 resource "aws_vpc" "this" {
-  cidr_block           = var.vpc_cidr
+  cidr_block           = "10.0.0.0/16"
   enable_dns_support   = true
   enable_dns_hostnames = true
   tags = {
-    Name = "${var.name_prefix}-vpc"
+    Name = "${var.vcluster.name}-vpc"
   }
 }
 
 # A tiny public subnet just for the NAT Gateway
 resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.this.id
-  cidr_block              = cidrsubnet(var.vpc_cidr, 8, 0) # first /24
+  cidr_block              = cidrsubnet("10.0.0.0/16", 8, 0) # first /24
   map_public_ip_on_launch = true
   availability_zone       = data.aws_availability_zones.available.names[0]
   tags = {
-    Name = "${var.name_prefix}-public"
+    Name = "${var.vcluster.name}-public"
   }
 }
 
 # Private subnet with Internet egress via NAT
 resource "aws_subnet" "private" {
   vpc_id            = aws_vpc.this.id
-  cidr_block        = cidrsubnet(var.vpc_cidr, 8, 1)        # second /24
+  cidr_block        = cidrsubnet("10.0.0.0/16", 8, 1)        # second /24
   availability_zone = data.aws_availability_zones.available.names[0]
   tags = {
-    Name = "${var.name_prefix}-private"
+    Name = "${var.vcluster.name}-private"
   }
 }
 
@@ -52,7 +52,7 @@ data "aws_availability_zones" "available" {}
 ############################
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.this.id
-  tags = { Name = "${var.name_prefix}-igw" }
+  tags = { Name = "${var.vcluster.name}-igw" }
 }
 
 resource "aws_eip" "nat" {
@@ -63,7 +63,7 @@ resource "aws_eip" "nat" {
 resource "aws_nat_gateway" "nat" {
   allocation_id = aws_eip.nat.id
   subnet_id     = aws_subnet.public.id
-  tags = { Name = "${var.name_prefix}-nat" }
+  tags = { Name = "${var.vcluster.name}-nat" }
 }
 
 ############################
@@ -75,7 +75,7 @@ resource "aws_route_table" "public" {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.igw.id
   }
-  tags = { Name = "${var.name_prefix}-public-rt" }
+  tags = { Name = "${var.vcluster.name}-public-rt" }
 }
 
 resource "aws_route_table_association" "public_assoc" {
@@ -89,7 +89,7 @@ resource "aws_route_table" "private" {
     cidr_block     = "0.0.0.0/0"
     nat_gateway_id = aws_nat_gateway.nat.id
   }
-  tags = { Name = "${var.name_prefix}-private-rt" }
+  tags = { Name = "${var.vcluster.name}-private-rt" }
 }
 
 resource "aws_route_table_association" "private_assoc" {
@@ -107,10 +107,3 @@ output "vpc_id" {
 output "private_subnet_id" {
   value = aws_subnet.private.id
 }
-
-############################
-# Variables
-############################
-variable "aws_region"   { type = string default = "us-east-1" }
-variable "vpc_cidr"     { type = string default = "10.0.0.0/16" }
-variable "name_prefix"  { type = string default = "demo" }
