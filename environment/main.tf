@@ -100,10 +100,6 @@ resource "aws_route_table_association" "private_assoc" {
 ############################
 # Outputs
 ############################
-output "vpc_id" {
-  value = aws_vpc.this.id
-}
-
 output "private_subnet_id" {
   value = aws_subnet.private.id
 }
