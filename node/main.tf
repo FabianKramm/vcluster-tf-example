@@ -68,8 +68,15 @@ resource "aws_instance" "this" {
   instance_type               = var.vcluster.requirements["instance-type"]
   subnet_id                   = data.aws_subnet.target.id
   vpc_security_group_ids      = [aws_security_group.instance_sg.id]
-  user_data                   = var.vcluster.userData  # raw cloud-init
-  user_data_replace_on_change = true                   # re-provision if script changes
+  user_data                   = var.vcluster.userData
+  user_data_replace_on_change = true
+
+  # --- Root disk sizing ---
+  root_block_device {
+    volume_size           = 50
+    volume_type           = "gp3"
+    delete_on_termination = true
+  }
 
   tags = {
     Name = "${var.vcluster.name}-ec2"
