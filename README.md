@@ -49,12 +49,10 @@ privateNodes:
     dynamic:
     - name: aws
       requirements:
-      - key: vcluster.com/node-provider
-        operator: In
-        values: ["aws-example"]
-      - key: region
-        operator: In
-        values: ["eu-west-1"]
+      - property: vcluster.com/node-provider
+        value: aws-example
+      - property: region
+        value: ["eu-west-1"]
 
 controlPlane:
   distro:
@@ -64,5 +62,5 @@ controlPlane:
 
 Create:
 ```
-vcluster platform create vcluster my-vcluster -n my-vcluster --values vcluster.yaml --chart-version 0.28.0-next.7
+vcluster platform create vcluster my-vcluster -n my-vcluster --values vcluster.yaml --chart-version 0.28.0-next.8
 ```
