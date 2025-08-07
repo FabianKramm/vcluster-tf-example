@@ -73,7 +73,7 @@ resource "aws_instance" "this" {
 
   # --- Root disk sizing ---
   root_block_device {
-    volume_size           = 50
+    volume_size           = 60
     volume_type           = "gp3"
     delete_on_termination = true
   }
