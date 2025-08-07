@@ -20,31 +20,6 @@ data "aws_subnet" "target" {
 }
 
 ############################
-# Security Group (egress-only by default)
-############################
-resource "aws_security_group" "instance_sg" {
-  name   = "${var.vcluster.name}-sg"
-  vpc_id = data.aws_subnet.target.vpc_id
-
-  # Example inbound rule (SSH); adjust as needed
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = { Name = "${var.vcluster.name}-sg" }
-}
-
-############################
 # EC2 instance
 ############################
 data "aws_ami" "ubuntu" {
@@ -67,7 +42,7 @@ resource "aws_instance" "this" {
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = var.vcluster.requirements["instance-type"]
   subnet_id                   = data.aws_subnet.target.id
-  vpc_security_group_ids      = [aws_security_group.instance_sg.id]
+  vpc_security_group_ids      = [var.vcluster.nodeEnvironment.outputs["security_group_id"]]
   user_data                   = var.vcluster.userData
   user_data_replace_on_change = true
 
