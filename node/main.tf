@@ -13,14 +13,7 @@ provider "aws" {
 }
 
 ############################
-# Look up the provided subnet
-############################
-data "aws_subnet" "target" {
-  id = var.vcluster.nodeEnvironment.outputs["private_subnet_id"]
-}
-
-############################
-# EC2 instance
+# Ubuntu AMI
 ############################
 data "aws_ami" "ubuntu" {
     most_recent = true
@@ -38,17 +31,20 @@ data "aws_ami" "ubuntu" {
     owners = ["099720109477"] # Canonical
 }
 
+############################
+# EC2 instance
+############################
 resource "aws_instance" "this" {
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = var.vcluster.requirements["instance-type"]
-  subnet_id                   = data.aws_subnet.target.id
+  subnet_id                   = var.vcluster.nodeEnvironment.outputs["private_subnet_id"]
   vpc_security_group_ids      = [var.vcluster.nodeEnvironment.outputs["security_group_id"]]
   user_data                   = var.vcluster.userData
   user_data_replace_on_change = true
 
   # --- Root disk sizing ---
   root_block_device {
-    volume_size           = 60
+    volume_size           = 50
     volume_type           = "gp3"
     delete_on_termination = true
   }
