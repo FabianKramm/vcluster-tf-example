@@ -62,5 +62,5 @@ controlPlane:
 
 Create:
 ```
-vcluster platform create vcluster my-vcluster -n my-vcluster --values vcluster.yaml --chart-version 0.28.0-next.8
+vcluster platform create vcluster my-vcluster -n my-vcluster --values vcluster.yaml --chart-version 0.28.0-next.9
 ```
