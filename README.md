@@ -52,7 +52,7 @@ privateNodes:
       - property: vcluster.com/node-provider
         value: aws-example
       - property: region
-        value: ["eu-west-1"]
+        value: eu-west-1
 
 controlPlane:
   distro:
