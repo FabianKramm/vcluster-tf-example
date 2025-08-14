@@ -98,17 +98,16 @@ resource "aws_route_table_association" "private_assoc" {
 }
 
 ############################
-# Security Group (egress-only by default)
+# Security Group
 ############################
 resource "aws_security_group" "instance_sg" {
   name   = "${var.vcluster.name}-sg"
   vpc_id = aws_vpc.this.id
 
-  # Example inbound rule (SSH); adjust as needed
   ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
