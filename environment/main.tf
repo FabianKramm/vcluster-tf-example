@@ -52,6 +52,7 @@ data "aws_availability_zones" "available" {}
 # NAT for private egress
 ############################
 resource "aws_internet_gateway" "igw" {
+  region = var.vcluster.requirements["region"]
   vpc_id = aws_vpc.this.id
   tags = { Name = "${var.vcluster.name}-igw" }
 }
@@ -63,6 +64,7 @@ resource "aws_eip" "nat" {
 }
 
 resource "aws_nat_gateway" "nat" {
+  region        = var.vcluster.requirements["region"]
   allocation_id = aws_eip.nat.id
   subnet_id     = aws_subnet.public.id
   tags = { Name = "${var.vcluster.name}-nat" }
