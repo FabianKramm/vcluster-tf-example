@@ -16,6 +16,7 @@ provider "aws" {
 # Networking primitives
 ############################
 resource "aws_vpc" "this" {
+  region               = var.vcluster.requirements["region"]
   cidr_block           = "10.0.0.0/16"
   enable_dns_support   = true
   enable_dns_hostnames = true
@@ -56,6 +57,7 @@ resource "aws_internet_gateway" "igw" {
 }
 
 resource "aws_eip" "nat" {
+  region = var.vcluster.requirements["region"]
   domain = "vpc"
   depends_on = [aws_internet_gateway.igw] # ensures IGW first
 }
