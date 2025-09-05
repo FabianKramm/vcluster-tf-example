@@ -1,7 +1,7 @@
 apiVersion: management.loft.sh/v1
 kind: NodeProvider
 metadata:
-  name: aws-example
+  name: aws
 spec:
   terraform:
     nodeEnvironmentTemplate:
@@ -19,20 +19,18 @@ spec:
         memory: 4Gi
       properties:
         instance-type: t3.medium
-        region: "eu-west-1,eu-west-2"
+        region: "*"
     - name: t3.large
       resources:
         cpu: "2"
         memory: 8Gi
       properties:
         instance-type: t3.large
-        region: "eu-west-1,eu-west-2"
+        region: "*"
     - name: c5.xlarge
       resources:
         cpu: "4"
         memory: 8Gi
       properties:
         instance-type: c5.xlarge
-        region: "eu-west-1,eu-west-2"
-        
-    
+        region: "*"
