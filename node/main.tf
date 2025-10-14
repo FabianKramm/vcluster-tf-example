@@ -36,7 +36,7 @@ data "aws_ami" "ubuntu" {
 ############################
 resource "aws_instance" "this" {
   ami                         = data.aws_ami.ubuntu.id
-  instance_type               = var.vcluster.properties["instance-type"]
+  instance_type               = var.vcluster.nodeType.spec.properties["instance-type"]
   subnet_id                   = var.vcluster.nodeEnvironment.outputs.infrastructure["private_subnet_id"]
   vpc_security_group_ids      = [var.vcluster.nodeEnvironment.outputs.infrastructure["security_group_id"]]
   user_data                   = var.vcluster.userData
